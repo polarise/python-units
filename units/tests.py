@@ -22,8 +22,7 @@ __email__     = "paul.korir@gmail.com"
 __date__      = "2017-06-02"
 
 import unittest
-from __init__ import Unit
-from .units import *
+from __init__ import *
 import random
 
 class TestUnits(unittest.TestCase):
@@ -78,6 +77,67 @@ class TestUnits(unittest.TestCase):
         z = x / rint2
         self.assertEqual(str(y), '{} m'.format(rint * rint2))
         self.assertEqual(str(z), '{} m'.format(rint / rint2))
+    def test_invalid_operations(self):
+        """Test operations that would fail e.g. addition of different units"""
+        rnum = random.random()
+        with self.assertRaises(TypeError):
+            complex(Unit(rnum, metre))
+        with self.assertRaises(TypeError):
+            int(Unit(rnum, metre))
+        with self.assertRaises(TypeError):
+            float(Unit(rnum, metre))
+        with self.assertRaises(TypeError):
+            long(Unit(rnum, metre))
+    def test_unary_operators(self):
+        """Test unary operators"""
+        rint = random.randint(1, 100)
+        x = Unit(rint, metre)
+        y = Unit(-rint, metre)
+        self.assertEqual(str(-x), '{} m'.format(-rint))
+        self.assertEqual(str(-y), '{} m'.format(rint))
+        self.assertEqual(str(+x), '{} m'.format(+rint))
+        self.assertEqual(str(+y), '{} m'.format(-rint))
+        self.assertEqual(str(abs(x)), '{} m'.format(abs(rint)))
+        self.assertEqual(str(abs(y)), '{} m'.format(abs(-rint)))
+    def test_operations(self):
+        """Test operations of the form Unit <operation> OtherUnit"""
+        rnum1 = random.random() * 10
+        rnum2 = random.random() * 10
+        x = Unit(rnum1, metre)
+        y = Unit(rnum2, metre)
+        self.assertEqual(str(x + y), '{} m'.format(rnum1 + rnum2))
+        self.assertEqual(str(y + x), '{} m'.format(rnum2 + rnum1))
+
+        self.assertEqual(str(x - y), '{} m'.format(rnum1 - rnum2))
+        self.assertEqual(str(y - x), '{} m'.format(rnum2 - rnum1))
+        
+        self.assertEqual(str(x * y), '{} m^2'.format(rnum1 * rnum2))
+        self.assertEqual(str(y * x), '{} m^2'.format(rnum2 * rnum1))
+        
+        self.assertEqual(str(x / y), '{}'.format(rnum1 / rnum2))
+        self.assertEqual(str(y / x), '{}'.format(rnum2 / rnum1))
+        
+        self.assertEqual(str(x // y), '{}'.format(rnum1 // rnum2))
+        self.assertEqual(str(y // x), '{}'.format(rnum2 // rnum1))
+        
+        self.assertEqual(str(x % y), '{}'.format(rnum1 % rnum2))
+        self.assertEqual(str(y % x), '{}'.format(rnum2 % rnum1))
+
+        a, b = divmod(x, y)
+        self.assertEqual(str(a), '{}'.format(rnum1 // rnum2))
+        self.assertEqual(str(b), '{}'.format(rnum1 % rnum2))
+
+        c, d = divmod(y, x)
+        self.assertEqual(str(c), '{}'.format(rnum2 // rnum1))
+        self.assertEqual(str(d), '{}'.format(rnum2 % rnum1))
+    def test_type_conversions(self):
+        """Test conversion functions"""
+        rnum = random.random() * 10
+        rint = random.randint(1, 100)
+        self.assertEqual(str(int_unit(Unit(rnum, metre))), '{} m'.format(int(rnum)))
+        self.assertEqual(str(float_unit(Unit(rint, metre))), '{} m'.format(float(rint)))
+        self.assertEqual(str(long_unit(Unit(rnum, metre))), '{} m'.format(long(rnum)))
+        self.assertEqual(str(complex_unit(Unit(rnum, metre))), '{} m'.format(complex(rnum)))
 
 
 if __name__ == "__main__":
