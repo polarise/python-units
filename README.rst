@@ -207,20 +207,20 @@ Features
 .. code:: python
 
 	class CommUnit(BaseUnit):
-    """Template class for communication units"""
-    def __init__(self, *args, **kwargs):
-        super(CommUnit, self).__init__(*args, **kwargs)
-        # redefine the base units
-        self.unit_dict = {
-            'b': 0,
-            's': 0,
-            'B': 0,
-        }
-    @classmethod
-    def define(cls, key, value=1):
-    	"""Constructor"""
-        obj = cls()
-        assert key in obj.unit_dict.keys()
-        assert isinstance(value, int)
-        obj.unit_dict[key] = value
-        return obj
+	    """Template class for communication units"""
+	    def __init__(self, *args, **kwargs):
+	        super(CommUnit, self).__init__(*args, **kwargs)
+	        # redefine the base units
+	        self.unit_dict = {
+	            'b': 0,
+	            's': 0,
+	            'B': 0,
+	        }
+	    @classmethod
+	    def define(cls, key, value=1):
+	    	"""Constructor"""
+	        obj = cls()
+	        assert key in obj.unit_dict.keys()
+	        assert isinstance(value, int)
+	        obj.unit_dict[key] = value
+	        return obj
