@@ -206,6 +206,9 @@ Features
 
 .. code:: python
 
+	from __future__ import division
+	from units import BaseUnit
+
 	class CommUnit(BaseUnit):
 	    """Template class for communication units"""
 	    def __init__(self, *args, **kwargs):
@@ -224,3 +227,14 @@ Features
 	        assert isinstance(value, int)
 	        obj.unit_dict[key] = value
 	        return obj
+
+which will be used as follows
+
+.. code:: python
+
+	bit = CommUnit.define('b') # define a bit as referring to the 'b' unit
+	second = CommUnit.define('s') # a second is 's'
+	data = Unit(32, bit)
+	T = Unit(4, second)
+	# data rate
+	print data / T # 8.0 b·s^-1 - bits per second
